@@ -5,7 +5,16 @@ var client = {
 };
 
 var mongoose = require('mongoose');
-mongoose.connect(process.env.PROD_MONGODB, function (err) {
+
+var connection;
+
+if (process.env.PROD_MONGODB != undefined) {
+    connection = process.env.PROD_MONGODB;
+} else {
+    connection = "mongodb://localhost/syncstart";
+}
+
+mongoose.connect(connection, function (err) {
     if (err) {
         console.error(err);
     } else {

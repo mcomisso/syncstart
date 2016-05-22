@@ -1,6 +1,6 @@
-'use_strict';
+'use strict';
 
-POSSIBLE_HANDS = [
+var POSSIBLE_HANDS = [
     'fa-hand-lizard-o',
     'fa-hand-paper-o',
     'fa-hand-spock-o',
@@ -11,8 +11,6 @@ var socket = io();
 
 socket.on('first_ready', function(data) {
     // The code
-    console.log(data);
-
     $('#content_code').text('Give this code to your partner: ' + data['code']);
 
     // Color the left background
@@ -24,8 +22,8 @@ socket.on('first_ready', function(data) {
 socket.on('complete', function(data) {
 
     var snackbarContainer = document.querySelector('#user-connected-toast');
-    var data = {message: 'User connected!'};
-    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+    var message = {message: 'User connected!'};
+    snackbarContainer.MaterialSnackbar.showSnackbar(message);
 
     // Set the right screen color - signal new user connected
     $('#right').addClass('mdl-color--cyan-500');
@@ -72,7 +70,6 @@ socket.on('complete', function(data) {
             // $('#countdown').text("🎉");
             return;
         }
-        //Do code for showing the number of seconds here
         $('#countdown').text(parseInt(count));
     }
 
@@ -102,12 +99,5 @@ $(document).ready(function(){
         var code = $('#code_input').val();
         socket.emit('match_code', {code: code});
     });
-
-
-    // Reset
-    var countContainer = document.getElementById('countdown-container');
-    countContainer.addEventListener('click'), function () {
-        window.href = '/';
-    }
 
 });
