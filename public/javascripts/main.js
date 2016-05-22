@@ -23,6 +23,10 @@ socket.on('first_ready', function(data) {
 
 socket.on('complete', function(data) {
 
+    var snackbarContainer = document.querySelector('#user-connected-toast');
+    var data = {message: 'User connected!'};
+    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+
     // Set the right screen color - signal new user connected
     $('#right').addClass('mdl-color--cyan-500');
     
