@@ -1,0 +1,53 @@
+extends layout
+
+block content
+
+  // Countdown dialog
+  div#countdown-container.nope.mdl-color--red-A200
+    h1#countdown.
+      10
+
+  //  Dialog on top, initial status
+  dialog.mdl-dialog
+    h3.mdl-dialog__title.
+      Syncstart
+    div.mdl-dialog__content
+      // Textfield for code insertion
+      div#div_input_code.mdl-textfield.mdl-js-textfield.mdl-textfield--floating-label
+        input(type="text")#code_input.mdl-textfield__input
+        label(for="code_input").mdl-textfield__label.
+          Code
+
+      // Output from server
+      p#content_code
+
+      //Spinner
+      div.mdl-spinner.mdl-spinner--single-color.mdl-js-spinner.is-active
+
+    div.mdl-dialog__actions
+      button.mdl-button.ready.
+        I have a code
+
+  //- Container
+  div#status.mdl-grid.mdl-grid--no-spacing
+
+    div#left.mdl-cell.mdl-cell--6-col.mdl-cell--stretch.mdl-cell--2-col-phone.mdl-cell--4-col-tablet
+      div#host.mdl-grid
+        //- Left user, div with hand
+        div.mdl-cell--12-col.mdl-cell--top.mdl-typography--text-center
+          i(aria-hidden="true")#user-icon-left.fa.fa-check-circle.big-text.mdl-color-text--grey-200
+
+        //- Left user connection status
+        div.mdl-cell--12-col.mdl-cell--middle.mdl-typography--text-center
+          i(aria-hidden="true").fa.fa-check-circle.big-text.mdl-color-text--red-A200
+
+
+    div#right.mdl-cell.mdl-cell--6-col.mdl-cell--stretch.mdl-cell--2-col-phone.mdl-cell--4-col-tablet
+      div#guest.mdl-grid
+        //- Right user, div with hand
+        div.mdl-cell--12-col.mdl-cell--top.mdl-typography--text-center
+          i(aria-hidden="true")#user-icon-right.fa.fa-user.big-text.mdl-color-text--grey-100
+
+        //- Right user, div with status
+        div.mdl-cell--12-col.mdl-cell--middle.mdl-typography--text-center
+          i(aria-hidden="true")#logged.fa.fa-question-circle.big-text.mdl-color-text--grey-100
