@@ -28,6 +28,10 @@ body {
   font-size: 10em !important;
 }
 
+.middle-text {
+  font-size: 4em !important;
+}
+
 .mdl-grid, .mdl-cell {
   height: 100%;
 }
