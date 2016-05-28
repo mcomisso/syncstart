@@ -8,6 +8,10 @@ var helmet = require('helmet');
 
 var routes = require('./routes/index');
 
+// Random name generator
+var Moniker = require('moniker');
+var names = Moniker.generator([Moniker.adjective, Moniker.noun], {glue: '_'});
+
 var socket_io = require('socket.io');
 var Sync = require('./app/models/Sync');
 var app = express();
@@ -67,30 +71,38 @@ var ID = function () {
   return '' + Math.random().toString(36).substr(2, 5);
 };
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 var io = socket_io();
 app.io = io;
 
 io.on('connection', function(socket) {
-  console.log('A client connected');
+  // console.log('A client connected');
 
   // Save the id, generate the server code and send it to it
   var socketID = socket.id;
   var appTempID = ID();
+
   var client = new Sync({
     socket_identifier: ''+socketID,
-    app_identifier: ''+appTempID
+    app_identifier: ''+appTempID,
+    first_player_name: ''+names.choose().capitalize()
   });
+
   client.save(function (err) {
     if (err) throw err;
-    console.log("User Created");
+    // console.log("User Created");
     // Send the code of the client
-    socket.emit('first_ready', {code: client.app_identifier} );
+    socket.emit('first_ready', {code: client.app_identifier, name: client.first_player_name} );
   });
 
   socket.on('match_code', function(data){
-    console.log(data);
+    // console.log(data);
     // Check in current status for code
     var code = data['code'];
+    var opponent_name = data['name'];
     Sync.find({app_identifier: code}, function (err, clients){
       if (err) throw err;
 
@@ -99,15 +111,18 @@ io.on('connection', function(socket) {
 
         console.log(client);
         client.other_socket = socket.id;
+        client.second_player_name = opponent_name;
 
         // There's only 5 hands
         var arr = [0,1,2,3,4];
         var left_index = arr[Math.floor(Math.random()*arr.length)];
         var right_index = arr[Math.floor(Math.random()*arr.length)];
+
+        // Emit to clients
         io.to(client.socket_identifier)
-            .emit('complete', {index: left_index, opponent: right_index});
+            .emit('complete', {index: left_index, opponent: right_index, opponent_name: client.second_player_name});
         io.to(client.other_socket)
-            .emit('complete', {index: right_index, opponent: left_index});
+            .emit('complete', {index: right_index, opponent: left_index, opponent_name: client.first_player_name});
 
         client.connection_date = new Date();
         client.save(function (err) {
@@ -115,12 +130,7 @@ io.on('connection', function(socket) {
         });
       }
     });
-
   });
-
-
-
-
 });
 
 
