@@ -15,9 +15,9 @@
     "express": "~4.13.1",
     "helmet": "^2.3.0",
     "jade": "~1.11.0",
-    "mongoose": "^4.11.3",
+    "mongoose": "^4.11.12",
     "morgan": "~1.6.1",
-    "serve-favicon": "^2.3.2",
+    "serve-favicon": "^2.4.4",
     "socket.io": "^1.7.4"
   }
 }
