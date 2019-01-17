@@ -16,6 +16,8 @@ socket.on('first_ready', function(data) {
     // Color the left background
     $('#left').addClass('mdl-color--cyan-700');
     $('#right').css('background-color', '#eee');
+
+    $('#left-player-name').text(data['name']);
 });
 
 
@@ -45,6 +47,8 @@ socket.on('complete', function(data) {
 
     $('#user-icon-right').addClass(right_user_icon);
     $('#user-icon-left').addClass(left_user_icon);
+
+    $('#right-player-name').text(data['opponent_name']);
 
     // Remove all and show timer
     var dialog = document.querySelector('dialog');
@@ -94,10 +98,10 @@ $(document).ready(function(){
         $('#content_code').hide("fast");
         $('.ready').hide();
     });
-
+    var player_name = $('#left-player-name').text();
     $('#code_input').on('keyup', function() {
         var code = $('#code_input').val();
-        socket.emit('match_code', {code: code});
+        socket.emit('match_code', {code: code, name: player_name });
     });
 
 });
