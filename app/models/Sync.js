@@ -14,13 +14,10 @@ if (process.env.PROD_MONGODB != undefined) {
     connection = "mongodb://localhost/syncstart";
 }
 
-mongoose.connect(connection, function (err) {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log("Mongo connected");
-    }
-});
+mongoose.connect(connection,  { useNewUrlParser: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
 var Schema = mongoose.Schema;
 
 var SyncSchema = new Schema({
